@@ -1,6 +1,7 @@
 {
-	"name": "rocket-chat-reactnative",
-	"version": "4.62.0",
+	"name": "shift-talk",
+	"version": "1.0.0",
+	"displayName": "Shift Talk",
 	"private": true,
 	"packageManager": "yarn@1.22.22",
 	"scripts": {

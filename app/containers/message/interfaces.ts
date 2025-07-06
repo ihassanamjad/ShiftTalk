@@ -92,6 +92,7 @@ export interface IMessageTouchable {
 	role?: string;
 	drid?: string;
 	isBeingEdited?: boolean;
+	u?: IUserMessage;
 }
 
 export interface IMessageRepliedThread extends Pick<IThread, 'tmid' | 'tmsg' | 'id'> {

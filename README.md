@@ -1,36 +1,112 @@
-# Rocket.Chat Mobile
+# 🟦 ShiftTalk
 
-- **Supported server versions:** 0.70.0+
+**A white-labeled React Native mobile app built on top of Rocket.Chat, tailored specifically for warehouse and industrial teams.**
+
+## 🎯 Core Objectives
+
+✅ **Provide a clean, secure messaging experience** for shift-based teams  
+✅ **Empower supervisors** to broadcast instructions and updates (highlighted in red)  
+✅ **Keep the platform lightweight** by leveraging Rocket.Chat's existing infrastructure  
+✅ **Make the app feel like a fully custom product** via white-labeling  
+
+## 👥 User Roles
+
+### **Supervisor**
+- Messages show in **red bubbles** to stand out
+- Can broadcast important updates, shift changes, or announcements
+- Full administrative capabilities
+
+### **Worker**
+- Regular message bubbles
+- Can chat in rooms but sees supervisor messages emphasized
+- Simplified interface focused on communication
+
+## 🚀 Features
+
+- **Role-based messaging** with visual distinction for supervisor messages
+- **Dark mode** enforced across the entire application
+- **Secure communication** built on Rocket.Chat's proven infrastructure
+- **White-labeled design** for seamless brand integration
+- **Real-time messaging** with push notifications
+- **File sharing** and media support
+- **Threaded conversations** for organized discussions
+
+## 📱 Technical Stack
+
+- **Framework**: React Native
+- **Backend**: Rocket.Chat server
+- **Database**: WatermelonDB (local) + MongoDB (server)
+- **State Management**: Redux
+- **Navigation**: React Navigation
+- **UI**: Custom components with dark theme
+
+## 🛠️ Development
+
+### Prerequisites
+- Node.js 16+
+- React Native development environment
+- Rocket.Chat server instance
+
+### Installation
+```bash
+# Clone the repository
+git clone <repository-url>
+cd ShiftTalk
+
+# Install dependencies
+npm install
+
+# iOS
+cd ios && pod install && cd ..
+
+# Run the app
+npm run ios     # for iOS
+npm run android # for Android
+```
+
+### Environment Setup
+1. Configure your Rocket.Chat server URL
+2. Set up white-label branding (logos, colors, app name)
+3. Configure push notifications
+4. Set up admin roles and permissions
+
+## 🎨 Customization
+
+### White-labeling
+- App icons and splash screens
+- Brand colors and themes
+- App name and bundle identifiers
+- Custom fonts and styling
+
+### Role Configuration
+- Define supervisor roles in Rocket.Chat
+- Configure message highlighting rules
+- Set up broadcast permissions
+
+## 📋 Requirements
+
+- **Supported server versions**: 0.70.0+
 - **Supported iOS versions**: 13.4+
 - **Supported Android versions**: 6.0+
 
-## Download
+## 🤝 Contributing
 
-<a href="https://play.google.com/store/apps/details?id=chat.rocket.android">
-  <img alt="Download on Google Play" src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height=43>
-</a>
-<a href="https://apps.apple.com/us/app/rocket-chat/id1148741252">
-  <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
-</a>
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
+- Code style and standards
+- Pull request process
+- Issue reporting
+- Development setup
 
-Check [our docs](https://developer.rocket.chat/docs/mobile-app) for  beta and Experimental versions.
+## 📄 License
 
-## Reporting an Issue
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-[Github Issues](https://github.com/RocketChat/Rocket.Chat.ReactNative/issues) are used to track todos, bugs, feature requests, and more.
+## 🆘 Support
 
-Also check the [#react-native](https://open.rocket.chat/channel/react-native) community on [open.rocket.chat](https://open.rocket.chat). We'd like to help.
+- **Documentation**: [Rocket.Chat Mobile Docs](https://developer.rocket.chat/docs/mobile-app)
+- **Community**: [#react-native](https://open.rocket.chat/channel/react-native) on [open.rocket.chat](https://open.rocket.chat)
+- **Issues**: [GitHub Issues](https://github.com/RocketChat/Rocket.Chat.ReactNative/issues)
 
-## Contributing
+---
 
-Are you a dev and would like to help? Found a bug that you would like to report or a missing feature that you would like to work on? Great! We have written down a [Contribution guide](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/CONTRIBUTING.md) so you can start easily.
-
-## Whitelabel
-Do you want to make the app run on your own server only? [Follow our whitelabel documentation.](https://developer.rocket.chat/mobile-app/mobile-app-white-labelling)
-
-## Engage with us
-### Share your story
-We’d love to hear about [your experience](https://survey.zohopublic.com/zs/e4BUFG) and potentially feature it on our [blog](https://www.rocket.chat/blog?utm_source=github&utm_medium=readme&utm_campaign=community).
-
-### Subscribe for Updates
-Once a month our marketing team releases an email update with news about product releases, company related topics, events and use cases. [Sign up!](https://rocket.chat/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=community)
+**Built with ❤️ for warehouse and industrial teams**

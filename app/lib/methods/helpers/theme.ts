@@ -13,19 +13,13 @@ let themeListener: { remove: () => void } | null;
 export const initialTheme = (): IThemePreference => {
 	const theme = UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference;
 	const initialTheme: IThemePreference = {
-		currentTheme: defaultTheme(),
+		currentTheme: 'dark', // Force dark mode
 		darkLevel: 'black'
 	};
 	return theme || initialTheme;
 };
 
-export const defaultTheme = (): TThemeMode => {
-	const systemTheme = Appearance.getColorScheme();
-	if (systemTheme) {
-		return systemTheme;
-	}
-	return 'light';
-};
+export const defaultTheme = (): TThemeMode => 'dark'; // Force dark mode across the board
 
 export const getTheme = (themePreferences: IThemePreference): TSupportedThemes => {
 	const { darkLevel, currentTheme } = themePreferences;

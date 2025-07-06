@@ -1,6 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import { View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+import { useSelector } from 'react-redux';
 
 import MessageContext from './Context';
 import User from './User';
@@ -192,7 +193,18 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { theme } = useTheme();
 
+	// Get usersRoles from Redux
+	const usersRoles = useSelector((state: any) => state.usersRoles);
 	let backgroundColor = undefined;
+
+	// Check if the sender is admin
+	const senderId = props.u?._id;
+	const senderRoles = usersRoles?.find((u: any) => u._id === senderId)?.roles || [];
+	const isAdmin = senderRoles.includes('admin');
+
+	if (isAdmin) {
+		backgroundColor = 'rgba(255, 0, 0, 0.15)'; // light red background for admin messages
+	}
 	if (props.isBeingEdited) {
 		backgroundColor = themes[theme].statusBackgroundWarning2;
 	}
