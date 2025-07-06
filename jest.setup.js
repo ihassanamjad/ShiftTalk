@@ -21,16 +21,7 @@ getSizeMock.mockImplementation(() => {});
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
-jest.mock('react-native-reanimated', () => {
-	const actual = jest.requireActual('react-native-reanimated/mock');
-	return {
-		...actual,
-		useSharedValue: jest.fn(init => ({ value: init })),
-		useAnimatedReaction: jest.fn(),
-		runOnJS: jest.fn(fn => fn),
-		withTiming: jest.fn(value => value)
-	};
-});
+jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
@@ -76,6 +67,8 @@ jest.mock('./app/lib/database', () => ({
 		get: jest.fn()
 	}
 }));
+
+jest.mock('./app/containers/MessageComposer/components/EmojiKeyboard', () => jest.fn(() => null));
 
 jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
 	useFrequentlyUsedEmoji: () => ({
@@ -154,4 +147,13 @@ jest.mock('react-native-math-view', () => {
 	};
 });
 
-jest.mock('react-native-keyboard-controller');
+jest.mock('react-native-ui-lib/keyboard', () => {
+	const react = jest.requireActual('react');
+	return {
+		__esModule: true,
+		KeyboardAccessoryView: react.forwardRef((props, ref) => {
+			const MockName = 'keyboard-accessory-view-mock';
+			return <MockName>{props.renderContent()}</MockName>;
+		})
+	};
+});

@@ -26,9 +26,5 @@ export default StyleSheet.create({
 	required: {
 		fontSize: 14,
 		...sharedStyles.textMedium
-	},
-	form: {
-		gap: 12,
-		paddingTop: 12
 	}
 });

@@ -1,20 +1,19 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
-import { useFocused } from '../../context';
-import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
+import { useFocused, useShowEmojiKeyboard, useShowEmojiSearchbar } from '../../context';
 import { ActionsButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
-export const Left = (): ReactElement | null => {
+export const Left = () => {
 	const { sharing } = useRoomContext();
 	const focused = useFocused();
-	const { showEmojiKeyboard, showEmojiSearchbar } = useEmojiKeyboard();
+	const showEmojiKeyboard = useShowEmojiKeyboard();
+	const showEmojiSearchbar = useShowEmojiSearchbar();
 	if (focused || showEmojiKeyboard || showEmojiSearchbar || sharing) {
 		return null;
 	}
-
 	return (
 		<View style={{ height: MIN_HEIGHT, paddingRight: 12, justifyContent: 'center' }}>
 			<ActionsButton />

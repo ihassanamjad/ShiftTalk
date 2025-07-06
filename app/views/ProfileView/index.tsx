@@ -267,7 +267,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	}, []);
 
 	return (
-		<KeyboardView>
+		<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
 			<StatusBar />
 			<SafeAreaView testID='profile-view'>
 				<ScrollView

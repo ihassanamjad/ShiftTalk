@@ -92,7 +92,7 @@ const SetUsernameView = () => {
 	};
 
 	return (
-		<KeyboardView backgroundColor={colors.surfaceHover}>
+		<KeyboardView style={{ backgroundColor: colors.surfaceHover }} contentContainerStyle={sharedStyles.container}>
 			<StatusBar />
 			<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 				<SafeAreaView testID='set-username-view'>

@@ -1,8 +1,7 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, Text, AccessibilityInfo } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
 
 import { encryptionDecodeKey } from '../actions/encryption';
 import Button from '../containers/Button';
@@ -10,9 +9,9 @@ import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import KeyboardView from '../containers/KeyboardView';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import { ControlledFormTextInput } from '../containers/TextInput';
+import { FormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector, usePrevious } from '../lib/hooks';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { useTheme } from '../theme';
@@ -30,24 +29,13 @@ const styles = StyleSheet.create({
 });
 
 const E2EEnterYourPasswordView = (): React.ReactElement => {
+	const [password, setPassword] = useState('');
 	const { colors } = useTheme();
 	const navigation = useNavigation();
 	const isFocused = useIsFocused();
 	const dispatch = useDispatch();
 	const { enabled: encryptionEnabled, failure: encryptionFailure } = useAppSelector(state => state.encryption);
-	const prevEncryptionFailure = useRef<boolean>(encryptionFailure);
-	const {
-		control,
-		setError,
-		watch,
-		handleSubmit,
-		formState: { errors }
-	} = useForm({
-		mode: 'onChange',
-		defaultValues: { password: '' }
-	});
-
-	const password = watch('password');
+	const prevEncryptionFailure = usePrevious(encryptionFailure);
 
 	/**
 	 * If e2ee is enabled, close screen and display success toast.
@@ -66,6 +54,11 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 		displayEncryptionEnabled();
 	}
 
+	// Wrong password
+	if (encryptionFailure !== prevEncryptionFailure && encryptionFailure && password) {
+		showErrorAlert(I18n.t('Encryption_error_desc'), I18n.t('Encryption_error_title'));
+	}
+
 	// If screen is closed and e2ee is still disabled, warns the user via toast
 	if (!isFocused && !encryptionEnabled) {
 		showToast(I18n.t('e2ee_disabled'));
@@ -78,36 +71,28 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 		});
 	}, [navigation]);
 
-	useEffect(() => {
-		if (encryptionFailure !== prevEncryptionFailure.current && encryptionFailure && password) {
-			setError('password', { message: I18n.t('Error_incorrect_password'), type: 'validate' });
-			showErrorAlert(I18n.t('Encryption_error_desc'), I18n.t('Encryption_error_title'));
-			AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
-			prevEncryptionFailure.current = encryptionFailure;
-		}
-	}, [encryptionFailure, prevEncryptionFailure]);
-
 	const submit = () => {
 		logEvent(events.E2E_ENTER_PW_SUBMIT);
 		dispatch(encryptionDecodeKey(password));
 	};
 
 	return (
-		<KeyboardView>
+		<KeyboardView
+			style={{ backgroundColor: colors.surfaceRoom }}
+			contentContainerStyle={sharedStyles.container}
+			keyboardVerticalOffset={128}>
 			<StatusBar />
 			<ScrollView
 				{...scrollPersistTaps}
 				style={sharedStyles.container}
 				contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 24 }}>
 				<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
-					<ControlledFormTextInput
-						name='password'
-						control={control}
+					<FormTextInput
 						label={I18n.t('Password')}
-						error={errors.password?.message}
 						returnKeyType='send'
 						secureTextEntry
 						onSubmitEditing={submit}
+						onChangeText={setPassword}
 						testID='e2e-enter-your-password-view-password'
 						autoComplete='password'
 						textContentType='password'
@@ -115,8 +100,9 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 						containerStyle={{ marginBottom: 0 }}
 					/>
 					<Button
-						onPress={handleSubmit(submit)}
+						onPress={submit}
 						title={I18n.t('Confirm')}
+						disabled={!password}
 						testID='e2e-enter-your-password-view-confirm'
 						style={{ marginTop: 36 }}
 					/>

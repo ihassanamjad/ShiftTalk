@@ -1,9 +1,8 @@
 import React, { ReactElement } from 'react';
-import { FlatList, ViewStyle } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { View, FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAutocompleteParams } from '../../context';
+import { useAutocompleteParams, useKeyboardHeight, useTrackingViewHeight } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
 import { IAutocompleteItemProps } from '../../interfaces';
@@ -13,14 +12,15 @@ import { useStyle } from './styles';
 
 export const Autocomplete = ({
 	onPress,
-	style,
 	accessibilityFocusOnInput
 }: {
 	onPress: IAutocompleteItemProps['onPress'];
-	style: ViewStyle;
 	accessibilityFocusOnInput: () => void;
 }): ReactElement | null => {
 	const { rid, updateAutocompleteVisible } = useRoomContext();
+	const trackingViewHeight = useTrackingViewHeight();
+	const keyboardHeight = useKeyboardHeight();
+	const { bottom } = useSafeAreaInsets();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({
 		rid,
@@ -31,13 +31,7 @@ export const Autocomplete = ({
 		commandParams: params
 	});
 	const [styles, colors] = useStyle();
-	let { left, right } = useSafeAreaInsets();
-	if (left === 0) {
-		left = 8;
-	}
-	if (right === 0) {
-		right = 8;
-	}
+	const viewBottom = trackingViewHeight + keyboardHeight + (keyboardHeight > 0 ? 0 : bottom) - 4;
 
 	if (items.length === 0 || !type) {
 		return null;
@@ -45,7 +39,13 @@ export const Autocomplete = ({
 
 	if (type !== '/preview') {
 		return (
-			<Animated.View style={[styles.root, { right, left }, style]}>
+			<View
+				style={[
+					styles.root,
+					{
+						bottom: viewBottom
+					}
+				]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					data={items}
@@ -53,13 +53,13 @@ export const Autocomplete = ({
 					keyboardShouldPersistTaps='always'
 					testID='autocomplete'
 				/>
-			</Animated.View>
+			</View>
 		);
 	}
 
 	if (type === '/preview') {
 		return (
-			<Animated.View style={[styles.root, { backgroundColor: colors.surfaceLight, right, left }, style]}>
+			<View style={[styles.root, { backgroundColor: colors.surfaceLight, bottom: viewBottom }]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					style={styles.list}
@@ -69,7 +69,7 @@ export const Autocomplete = ({
 					keyboardShouldPersistTaps='always'
 					testID='autocomplete'
 				/>
-			</Animated.View>
+			</View>
 		);
 	}
 

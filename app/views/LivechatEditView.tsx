@@ -191,7 +191,10 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	}, []);
 
 	return (
-		<KeyboardView backgroundColor={themes[theme].surfaceHover}>
+		<KeyboardView
+			style={{ backgroundColor: themes[theme].surfaceHover }}
+			contentContainerStyle={sharedStyles.container}
+			keyboardVerticalOffset={128}>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<Title title={visitor?.username} theme={theme} />

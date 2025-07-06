@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 
 import { textInputDebounceTime } from '../../../lib/constants';
-import { MessageInnerContext } from '../context';
+import { MessageInnerContext, useMessageComposerApi, useShowEmojiSearchbar } from '../context';
 import { useTheme } from '../../../theme';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../CustomIcon';
@@ -14,14 +14,14 @@ import sharedStyles from '../../../views/Styles';
 import { PressableEmoji } from '../../EmojiPicker/PressableEmoji';
 import { EmojiSearch } from '../../EmojiPicker/EmojiSearch';
 import { EMOJI_BUTTON_SIZE } from '../../EmojiPicker/styles';
-import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
 export const EmojiSearchbar = (): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
-	const { showEmojiSearchbar, closeEmojiSearchbar } = useEmojiKeyboard();
+	const showEmojiSearchbar = useShowEmojiSearchbar();
+	const { openEmojiKeyboard, closeEmojiKeyboard } = useMessageComposerApi();
 	const { onEmojiSelected } = useContext(MessageInnerContext);
 	const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
 	const [emojis, setEmojis] = useState<IEmoji[]>([]);
@@ -43,6 +43,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 		return null;
 	}
 
+	// TODO: Use RNGH
 	return (
 		<View style={{ backgroundColor: colors.surfaceLight }}>
 			<FlatList
@@ -62,13 +63,13 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 			<View style={styles.searchContainer}>
 				<Pressable
 					style={({ pressed }: { pressed: boolean }) => [styles.backButton, { opacity: pressed ? 0.7 : 1 }]}
-					onPress={closeEmojiSearchbar}
+					onPress={openEmojiKeyboard}
 					hitSlop={BUTTON_HIT_SLOP}
 					testID='openback-emoji-keyboard'>
 					<CustomIcon name='chevron-left' size={24} />
 				</Pressable>
 				<View style={styles.inputContainer}>
-					<EmojiSearch onChangeText={handleTextChange} />
+					<EmojiSearch onBlur={closeEmojiKeyboard} onChangeText={handleTextChange} />
 				</View>
 			</View>
 		</View>

@@ -1,6 +1,6 @@
-import { FlatListProps } from 'react-native';
+import { KeyboardAwareScrollViewProps } from '@codler/react-native-keyboard-aware-scroll-view';
 
-const scrollPersistTaps: Partial<FlatListProps<any>> = {
+const scrollPersistTaps: Partial<KeyboardAwareScrollViewProps> = {
 	keyboardShouldPersistTaps: 'handled',
 	keyboardDismissMode: 'interactive'
 };

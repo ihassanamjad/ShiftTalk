@@ -1,20 +1,18 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { useFocused } from '../../context';
-import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
+import { useFocused, useShowEmojiKeyboard, useShowEmojiSearchbar } from '../../context';
 import { MicOrSendButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
 import { CancelEdit } from '../CancelEdit';
 
-export const Right = (): React.ReactElement | null => {
+export const Right = () => {
 	const focused = useFocused();
-	const { showEmojiKeyboard, showEmojiSearchbar } = useEmojiKeyboard();
-
+	const showEmojiKeyboard = useShowEmojiKeyboard();
+	const showEmojiSearchbar = useShowEmojiSearchbar();
 	if (focused || showEmojiKeyboard || showEmojiSearchbar) {
 		return null;
 	}
-
 	return (
 		<View style={{ height: MIN_HEIGHT, paddingLeft: 12, alignItems: 'center', flexDirection: 'row' }}>
 			<CancelEdit />
